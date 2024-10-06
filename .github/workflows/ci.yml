@@ -31,6 +31,7 @@ jobs:
         run: |
           # mkdir -p ci/
           chmod +x ./ci/*
+          chmod +x ./COMServer/*
           ./ci/build.sh
           
       # Step 4: Run tests

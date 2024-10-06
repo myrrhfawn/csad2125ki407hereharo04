@@ -21,5 +21,5 @@ arduino-cli core update-index
 arduino-cli core install $BOARD
 
 # Compile sketch
-echo "Compile $SKETCH_NAME ..."
+echo "Compile $SKETCH_NAME"
 arduino-cli compile --fqbn $BOARD --output-dir ./build --verbose $SKETCH_NAME
