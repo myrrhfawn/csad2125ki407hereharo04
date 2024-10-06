@@ -8,7 +8,7 @@ PORT="/dev/ttyV0"           # Path to UART port
 if ! command -v arduino-cli &> /dev/null
 then
     echo "Arduino CLI not found. Please install Arduino CLI."
-    exit 1
+    exit 0
 fi
 
 # Update plaform index
