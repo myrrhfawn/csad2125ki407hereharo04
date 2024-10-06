@@ -1,9 +1,10 @@
 #!/bin/bash
 
+export PATH=$PATH:$PWD/bin/
 if [ -n "$GITHUB_ENV" ]; then
-  echo "export PATH=$PATH:$PWD/bin/" >> $GITHUB_ENV
+  echo "export PATH=$PATH" >> $GITHUB_ENV
 else
-  echo "export PATH=$PATH:$PWD/bin/" > ~/.bashrc
+  echo "export PATH=$PATH" > ~/.bashrc
   source ~/.bashrc
 fi
 
