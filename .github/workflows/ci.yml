@@ -26,8 +26,8 @@ jobs:
       # Step 3: Build binaries
       - name: Build binaries
         run: |
-          mkdir -p ci/
-          ./build.sh
+          # mkdir -p ci/
+          ./ci/build.sh
           
       # Step 4: Run tests
       #- name: Run tests
