@@ -30,8 +30,7 @@ jobs:
       - name: Build binaries
         run: |
           # mkdir -p ci/
-          chmod +x ./ci/*
-          chmod +x ./COMServer/*
+          chmod +xw ./ci/*
           ./ci/build.sh
           
       # Step 4: Run tests

@@ -23,9 +23,6 @@ fi
 # Update plaform index
 arduino-cli core update-index
 
-# Intall Arduino board 
-arduino-cli core install $BOARD
-
 # Compile sketch
 echo "Compile $SKETCH_NAME"
 arduino-cli compile --fqbn $BOARD --output-dir $PROJECT_DIR/ci/build --verbose $SKETCH_NAME
