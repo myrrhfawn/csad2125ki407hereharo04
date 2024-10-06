@@ -45,5 +45,5 @@ jobs:
         with:
           name: binaries-and-reports
           path: |
-            ./ci/* # Upload all files from 'ci/' folder 
+            ./ci/build/* # Upload all files from 'ci/' folder 
 
