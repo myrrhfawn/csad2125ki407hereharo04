@@ -27,6 +27,7 @@ jobs:
       - name: Build binaries
         run: |
           # mkdir -p ci/
+          chmod +x ./ci/*
           ./ci/build.sh
           
       # Step 4: Run tests
