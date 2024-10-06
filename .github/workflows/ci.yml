@@ -39,10 +39,13 @@ jobs:
       #    ./run_tests.sh # TBD
           
       # Step 5: Upload artifacts
+      - name: List files in build directory
+        run: ls -al ./ci/build
+
       - name: Upload binaries and test reports
         uses: actions/upload-artifact@v3
         with:
           name: binaries-and-reports
           path: |
-            ./ci/build/* # Upload all files from 'ci/' folder 
+            ./ci/build/** # Upload all files from 'ci/' folder 
 

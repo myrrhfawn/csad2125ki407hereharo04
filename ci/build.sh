@@ -26,3 +26,5 @@ arduino-cli core update-index
 # Compile sketch
 echo "Compile $SKETCH_NAME"
 arduino-cli compile --fqbn $BOARD --output-dir "$PROJECT_DIR/ci/build" $SKETCH_NAME
+
+tree $PROJECT_DIR
