@@ -1,0 +1,44 @@
+name: CI Pipeline
+
+# Run on PR or push into develop
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Setup repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Install dependencies
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          
+      # Step 3: Build binaries
+      - name: Build binaries
+        run: |
+          mkdir -p ci/
+          ./build.sh
+          
+      # Step 4: Run tests
+      #- name: Run tests
+      #  run: |
+      #    ./run_tests.sh # TBD
+          
+      # Step 5: Upload artifacts
+      - name: Upload binaries and test reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries-and-reports
+          path: |
+            ./ci/* # Upload all files from 'ci/' folder 
+
