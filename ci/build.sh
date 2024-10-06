@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -n "$GITHUB_WORKSPACE" ]; then
-  PROJECT_DIR=$$GITHUB_WORKSPACE
+  PROJECT_DIR=$GITHUB_WORKSPACE
 else
   PROJECT_DIR="/data/APKS/csad2125ki407hereharo04/"  # Binary file name
 fi
