@@ -1,16 +1,18 @@
 #!/bin/bash
 
-BOARD="arduino:avr:nano"       # Board name
 if [ -n "$GITHUB_WORKSPACE" ]; then
-  SKETCH_NAME="$GITHUB_WORKSPACE/COMServer/COMServer.ino"  # Binary file name
+  PROJECT_DIR = $$GITHUB_WORKSPACE
 else
-  SKETCH_NAME="../COMServer/COMServer.ino"  # Binary file name
+  PROJECT_DIR="/data/APKS/csad2125ki407hereharo04/"  # Binary file name
 fi
 
+BOARD="arduino:avr:nano"       # Board name
+SKETCH_NAME="$GITHUB_WORKSPACE/COMServer/COMServer.ino"  # Binary file name
 export PATH=$PATH:$PWD/bin/
 
 sudo apt-get install tree
-tree ../
+tree $PROJECT_DIR
+
 # Check Arduino CLI
 if ! command -v arduino-cli &> /dev/null
 then
@@ -26,4 +28,4 @@ arduino-cli core install $BOARD
 
 # Compile sketch
 echo "Compile $SKETCH_NAME"
-arduino-cli compile --fqbn $BOARD --output-dir ./build --verbose $SKETCH_NAME
+arduino-cli compile --fqbn $BOARD --output-dir $PROJECT_DIR/ci/build --verbose $SKETCH_NAME
