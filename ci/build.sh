@@ -3,7 +3,7 @@
 SKETCH_NAME="../COMServer/COMServer.ino"  # Binary file name
 BOARD="arduino:avr:nano"       # Board name
 
-#export PATH=$PATH:$PWD/bin/
+export PATH=$PATH:$PWD/bin/
 # Check Arduino CLI
 if ! command -v arduino-cli &> /dev/null
 then
