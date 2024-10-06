@@ -3,6 +3,7 @@
 SKETCH_NAME="../COMServer/COMServer.ino"  # Binary file name
 BOARD="arduino:avr:nano"       # Board name
 
+#export PATH=$PATH:$PWD/bin/
 # Check Arduino CLI
 if ! command -v arduino-cli &> /dev/null
 then
@@ -17,5 +18,5 @@ arduino-cli core update-index
 arduino-cli core install $BOARD
 
 # Compile sketch
-echo "Compile $SKETCH_NAME..."
-arduino-cli compile --fqbn $BOARD $SKETCH_NAME
+echo "Compile $SKETCH_NAME ..."
+arduino-cli compile --fqbn $BOARD --output-dir ./build --verbose $SKETCH_NAME
