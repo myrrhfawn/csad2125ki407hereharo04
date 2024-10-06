@@ -1,7 +1,11 @@
 #!/bin/bash
 
-SKETCH_NAME="../COMServer/COMServer.ino"  # Binary file name
 BOARD="arduino:avr:nano"       # Board name
+if [ -n "$GITHUB_WORKSPACE" ]; then
+  SKETCH_NAME="$GITHUB_WORKSPACE/COMServer/COMServer.ino"  # Binary file name
+else
+  SKETCH_NAME="../COMServer/COMServer.ino"  # Binary file name
+fi
 
 export PATH=$PATH:$PWD/bin/
 
