@@ -7,7 +7,6 @@ else
   PROJECT_DIR="$LOCAL_DIR/csad2125ki407hereharo04/"  # Binary file name
 fi
 
-BOARD="arduino:avr:nano"       # Board name
 SKETCH_NAME="$PROJECT_DIR/COMServer/COMServer.ino"  # Binary file name
 export PATH=$PATH:$PWD/bin/
 
