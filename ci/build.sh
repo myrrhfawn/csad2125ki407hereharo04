@@ -1,12 +1,12 @@
 #!/bin/bash
+source .env
 
 if [ -n "$GITHUB_WORKSPACE" ]; then
   PROJECT_DIR=$GITHUB_WORKSPACE
 else
-  PROJECT_DIR="/data/APKS/csad2125ki407hereharo04/"  # Binary file name
+  PROJECT_DIR="$LOCAL_DIR/csad2125ki407hereharo04/"  # Binary file name
 fi
 
-BOARD="arduino:avr:nano"       # Board name
 SKETCH_NAME="$PROJECT_DIR/COMServer/COMServer.ino"  # Binary file name
 export PATH=$PATH:$PWD/bin/
 
