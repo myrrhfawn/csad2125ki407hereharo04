@@ -1,0 +1,13 @@
+<circuit version="1.1.0-SR0" rev="1917" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="Subcircuit" CircId="Nano-2" mainComp="false" Show_id="true" Show_Val="false" Pos="-48,-196" rotation="0" hflip="1" vflip="1" label="Nano-2" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0">
+<mainCompProps MainCompId="m328 TQFP-269" Frequency="16 MHz" Program="COMServer.hex" Auto_Load="false" saveEepr="true" SerialMon="1" />
+</item>
+
+<item itemtype="SerialPort" CircId="SerialPort-3" mainComp="false" Show_id="false" Show_Val="false" Pos="-64,-260" rotation="0" hflip="1" vflip="1" label="SerialPort-3" idLabPos="-20,-32" labelrot="0" valLabPos="-16,20" valLabRot="0" Auto="false" Port="/tmp/ttyV0" Baudrate="9600 _Bd" DataBits="8 _bits" StopBits="1 _bits" SerialMon="true" />
+
+<item itemtype="Connector" uid="Connector-15" startpinid="SerialPort-3-pin1" endpinid="Nano-2-1" pointList="-104,-252,-104,-180,-40,-180" />
+
+<item itemtype="Connector" uid="Connector-16" startpinid="SerialPort-3-pin0" endpinid="Nano-2-0" pointList="-104,-268,-104,-172,-40,-172" />
+
+</circuit>
