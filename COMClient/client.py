@@ -1,5 +1,4 @@
 import re
-
 import serial
 import time
 import os
@@ -8,9 +7,7 @@ from attr import dataclass
 from dotenv import load_dotenv
 import xml.etree.ElementTree as ET
 
-from onnxruntime.tools.ort_format_model.ort_flatbuffers_py.fbs.Node import NodeEnd
-
-# Завантаження налаштувань з файлу .env
+# Load settings from the .env file
 load_dotenv()
 SERIAL_PORT: str = os.getenv("SERIAL_PORT")
 LOCAL_DIR: str = os.getenv("LOCAL_DIR")
@@ -18,13 +15,14 @@ print(f"Loaded SERIAL_PORT: {SERIAL_PORT}")
 print(f"Loaded LOCAL_DIR: {LOCAL_DIR}")
 BAUDRATE: int = 9600
 
-# Ініціалізація серійного порту
+# Initialize the serial port
 ser = serial.Serial(SERIAL_PORT, BAUDRATE)
 time.sleep(2)
 
+
 @dataclass
 class Game:
-    mode: int =  0
+    mode: int = 0
     player1: str = ""
     player2: str = ""
     winner: str = ""
@@ -32,8 +30,28 @@ class Game:
     def __str__(self):
         return f"Game(Mode[{self.mode}]: {self.player1} vs {self.player2} -> {self.winner})"
 
+
 class XMLLogger:
+    """
+    @class XMLLogger
+    @brief Class for logging game data to an XML file.
+
+    The XMLLogger class is responsible for maintaining game logs by writing
+    game information to an XML file. This includes starting new games, setting game mode,
+    tracking player moves, and logging game results.
+
+    @param file_name The name of the XML log file. Defaults to "game_log.xml".
+    """
+
     def __init__(self, file_name: str = "game_log.xml"):
+        """
+        @brief Constructor to initialize the XMLLogger object.
+
+        Initializes the XML file, creates a root element if it doesn't exist,
+        and sets up necessary properties for logging games.
+
+        @param file_name The name of the XML log file.
+        """
         self.file_path = os.path.join(LOCAL_DIR, "csad2125ki407hereharo04", file_name)
         self.id = 0
         self.current_game: Game = Game()
@@ -43,6 +61,15 @@ class XMLLogger:
             tree.write(self.file_path)
 
     def process_result(self, command, response):
+        """
+        @brief Processes the game command and response.
+
+        Handles game commands such as starting new games, setting game modes,
+        recording player moves, and determining the winner from the response.
+
+        @param command The command string to process.
+        @param response The response string to analyze.
+        """
         if "NEW" in command:
             self.id += 1
             self.current_game = Game()
@@ -70,34 +97,55 @@ class XMLLogger:
             self.id += 1
 
     def extract_winner(self, response):
+        """
+        @brief Extracts the winner information from the game response.
+
+        Uses regex to determine the winner from the response string.
+
+        @param response The response string to analyze.
+        @return The winner's ID or None if not found.
+        """
         winner_match = re.search(r"Player\s(\d+)\swins!", response)
         if winner_match:
-            winner_id = int(winner_match.group(1))  # Витягуємо номер переможця
+            winner_id = int(winner_match.group(1))  # Extract the winner's ID
             return winner_id
         return None
 
     def extract_move(self, response):
-        # Використовуємо регулярний вираз для знаходження номера гравця та ходу
+        """
+        @brief Extracts player moves from the response string.
+
+        Uses regex to find the moves of player 1 and player 2 in the response.
+
+        @param response The response string to analyze.
+        @return A tuple containing moves of player 1 and player 2.
+        """
         move_match = re.search(r"Player 1 .*chosen:\s([RPS])", response)
         move_1, move_2 = None, None
         if move_match:
-            move_1 = move_match.group(1)  # Витягуємо сам хід (R, P, або S)
+            move_1 = move_match.group(1)  # Extract move (R, P, or S)
         move_match2 = re.search(r"Player 2 .*chosen:\s([RPS])", response)
         if move_match2:
-            move_2 = move_match2.group(1)  # Витягуємо сам хід (R, P, або S)
+            move_2 = move_match2.group(1)  # Extract move (R, P, or S)
         return move_1, move_2
 
     def write_game(self):
+        """
+        @brief Writes the current game data to the XML log file.
+
+        Parses the XML file, appends the current game data as a new element,
+        and writes the updated XML file to disk.
+        """
         tree = ET.parse(self.file_path)
         root = tree.getroot()
 
-        # Додаємо новий елемент з даними про команду та результат
+        # Add a new element with the game command and result
         game = ET.Element(f"game_id_{self.id}")
         time_element = ET.SubElement(game, "timestamp")
         time_element.text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
         mode_element = ET.SubElement(game, "mode")
-        mode_element.text = int(self.current_game.mode)
+        mode_element.text = str(self.current_game.mode)
 
         player1_element = ET.SubElement(game, "player1_move")
         player1_element.text = self.current_game.player1
@@ -106,14 +154,22 @@ class XMLLogger:
 
         player2_element = ET.SubElement(game, "winner")
         player2_element.text = self.current_game.winner
-        print(f"Game [{self.id}] writed: {self.current_game}")
+        print(f"Game [{self.id}] written: {self.current_game}")
         root.append(game)
         tree.write(self.file_path)
 
 logger = XMLLogger(file_name="game_log.xml")
 
-# Функція для відправки команд на Arduino
+
+# Function to send commands to Arduino
 def send_command(command):
+    """
+    @brief Sends a command to the Arduino and logs the response.
+
+    Writes the command to the serial port, waits for the response, and logs the response.
+
+    @param command The command string to be sent to Arduino.
+    """
     ser.write((command + '\n').encode())
     time.sleep(0.1)
     response = "\n"
@@ -126,23 +182,43 @@ def send_command(command):
     print("Server response:", response)
     logger.process_result(command, response)
 
-try:
-    # Меню з опціями, включаючи вибір режиму гри
-    print("\nMenu:")
-    print("NEW - Start a new game")
-    print("MODE X - Select game mode (0 for Human_vs_Human, 1 for Human_vs_AI, 2 for AI_vs_AI)")
-    print("MOVE x M - Make a move (x: player number [1 or 2], M: move [R, P, S])")
-    print("STATUS - Get game status")
 
-    while True:
-        # Читання введеної користувачем команди
-        command = input("Enter command: ")
+if __name__ == "__main__":
+    """
+    @brief Main entry point of the program.
 
-        # Надсилання команди на Arduino та друк відповіді
-        send_command(command)
+    The main function initializes the menu, accepts user commands, and processes them 
+    until the user exits the program. Commands are sent to the connected Arduino device, 
+    and the responses are logged accordingly.
+    """
 
-except KeyboardInterrupt:
-    print("Exiting the program.")
+    try:
+        # Menu options, including selecting game mode
+        print("\nMenu:")
+        print("NEW - Start a new game")
+        print("MODE X - Select game mode (0 for Human_vs_Human, 1 for Human_vs_AI, 2 for AI_vs_AI)")
+        print("MOVE x M - Make a move (x: player number [1 or 2], M: move [R, P, S])")
+        print("STATUS - Get game status")
 
-finally:
-    ser.close()
+        while True:
+            # Reading the command entered by the user
+            command = input("Enter command: ")
+
+            # Sending the command to Arduino and printing the response
+            send_command(command)
+
+    except KeyboardInterrupt:
+        """
+        @brief Handles program termination by user.
+
+        Catches the `KeyboardInterrupt` exception (Ctrl+C) to exit the program safely.
+        """
+        print("Exiting the program.")
+
+    finally:
+        """
+        @brief Closes the serial connection.
+
+        Ensures that the serial port is closed properly to prevent connection issues.
+        """
+        ser.close()
