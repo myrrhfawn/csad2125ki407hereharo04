@@ -166,7 +166,7 @@ logger = XMLLogger(file_name="game_log.xml")
 
 
 # Function to send commands to Arduino
-def send_command(command):
+def send_command(ser, command, timeout=5):
     """
     @brief Sends a command to the Arduino and logs the response.
 
@@ -175,11 +175,12 @@ def send_command(command):
     @param command The command string to be sent to Arduino.
     """
     ser.write((command + '\n').encode())
+    start_time = time.time()
     time.sleep(0.1)
     response = "\n"
     while True:
         msg = ser.readline().decode().strip()
-        if msg == 'end':
+        if msg == 'end' or (time.time() - start_time > timeout):
             break
         else:
             response += msg + '\n'
@@ -213,7 +214,7 @@ if __name__ == "__main__":
             command = input("Enter command: ")
 
             # Sending the command to Arduino and printing the response
-            send_command(command)
+            send_command(ser, command)
 
     except KeyboardInterrupt:
         """
