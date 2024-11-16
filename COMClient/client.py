@@ -133,27 +133,28 @@ class XMLLogger:
         Parses the XML file, appends the current game data as a new element,
         and writes the updated XML file to disk.
         """
-        tree = ET.parse(self.file_path)
-        root = tree.getroot()
+        if os.path.exists(self.file_path):
+            tree = ET.parse(self.file_path)
+            root = tree.getroot()
 
-        # Add a new element with the game command and result
-        game = ET.Element(f"game_id_{self.id}")
-        time_element = ET.SubElement(game, "timestamp")
-        time_element.text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            # Add a new element with the game command and result
+            game = ET.Element(f"game_id_{self.id}")
+            time_element = ET.SubElement(game, "timestamp")
+            time_element.text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-        mode_element = ET.SubElement(game, "mode")
-        mode_element.text = str(self.current_game.mode)
+            mode_element = ET.SubElement(game, "mode")
+            mode_element.text = str(self.current_game.mode)
 
-        player1_element = ET.SubElement(game, "player1_move")
-        player1_element.text = self.current_game.player1
-        player2_element = ET.SubElement(game, "player2_move")
-        player2_element.text = self.current_game.player2
+            player1_element = ET.SubElement(game, "player1_move")
+            player1_element.text = self.current_game.player1
+            player2_element = ET.SubElement(game, "player2_move")
+            player2_element.text = self.current_game.player2
 
-        player2_element = ET.SubElement(game, "winner")
-        player2_element.text = self.current_game.winner
-        # print(f"Game [{self.id}] written: {self.current_game}")
-        root.append(game)
-        tree.write(self.file_path)
+            player2_element = ET.SubElement(game, "winner")
+            player2_element.text = self.current_game.winner
+            # print(f"Game [{self.id}] written: {self.current_game}")
+            root.append(game)
+            tree.write(self.file_path)
 
 logger = XMLLogger(file_name="game_log.xml")
 
