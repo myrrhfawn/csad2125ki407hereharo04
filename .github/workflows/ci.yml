@@ -32,15 +32,10 @@ jobs:
           # mkdir -p ci/
           chmod +xw ./ci/*
           ./ci/build.sh
-          
-      # Step 4: Run tests
-      #- name: Run tests
-      #  run: |
-      #    ./run_tests.sh # TBD
-          
-      # Step 5: Upload artifacts
-      - name: List files in build directory
-        run: ls -al ./ci/build
+
+#      # Step 5: Upload artifacts
+#      - name: List files in build directory
+#        run: ls -al ./ci/build
 
       - name: Upload binaries and test reports
         uses: actions/upload-artifact@v3
