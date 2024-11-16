@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from your_module import XMLLogger, Game, send_command  # replace 'your_module' with actual module name
+from COMClient.client import XMLLogger, Game, send_command
 
 
 class TestGame(unittest.TestCase):
@@ -13,20 +13,20 @@ class TestGame(unittest.TestCase):
 
 
 class TestXMLLogger(unittest.TestCase):
-    @patch("your_module.os.path.exists", return_value=False)
-    @patch("your_module.ET.ElementTree.write")
+    @patch("COMClient.client.os.path.exists", return_value=False)
+    @patch("COMClient.client.ET.ElementTree.write")
     def test_logger_initialization_creates_file(self, mock_write, mock_exists):
         logger = XMLLogger()
         mock_write.assert_called_once()
 
-    @patch("your_module.XMLLogger.write_game")
+    @patch("COMClient.client.XMLLogger.write_game")
     def test_process_result_start_new_game(self, mock_write_game):
         logger = XMLLogger()
         logger.process_result("NEW", "")
         self.assertEqual(logger.id, 1)
         self.assertEqual(logger.current_game.mode, 0)
 
-    @patch("your_module.XMLLogger.write_game")
+    @patch("COMClient.client.XMLLogger.write_game")
     def test_process_result_set_mode(self, mock_write_game):
         logger = XMLLogger()
         logger.process_result("MODE 1", "")
@@ -48,7 +48,7 @@ class TestXMLLogger(unittest.TestCase):
         result = logger.extract_move("Player 1 has chosen: S\nPlayer 2 has chosen: R")
         self.assertEqual(result, ("S", "R"))
 
-    @patch("your_module.ET.ElementTree.write")
+    @patch("COMClient.client.ET.ElementTree.write")
     def test_write_game(self, mock_write):
         logger = XMLLogger()
         logger.current_game = Game(mode=1, player1="R", player2="P", winner="Player_1")
@@ -57,9 +57,9 @@ class TestXMLLogger(unittest.TestCase):
 
 
 class TestSendCommand(unittest.TestCase):
-    @patch("your_module.ser.write")
-    @patch("your_module.ser.readline", side_effect=[b'Server response line\n', b'end\n'])
-    @patch("your_module.logger.process_result")
+    @patch("COMClient.client.ser.write")
+    @patch("COMClient.client.ser.readline", side_effect=[b'Server response line\n', b'end\n'])
+    @patch("COMClient.client.logger.process_result")
     def test_send_command(self, mock_process_result, mock_readline, mock_write):
         send_command("TEST_COMMAND")
         mock_write.assert_called_once()

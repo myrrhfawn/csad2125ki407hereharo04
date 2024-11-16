@@ -15,9 +15,6 @@ print(f"Loaded SERIAL_PORT: {SERIAL_PORT}")
 print(f"Loaded LOCAL_DIR: {LOCAL_DIR}")
 BAUDRATE: int = 9600
 
-# Initialize the serial port
-ser = serial.Serial(SERIAL_PORT, BAUDRATE)
-time.sleep(2)
 
 
 @dataclass
@@ -154,7 +151,7 @@ class XMLLogger:
 
         player2_element = ET.SubElement(game, "winner")
         player2_element.text = self.current_game.winner
-        print(f"Game [{self.id}] written: {self.current_game}")
+        # print(f"Game [{self.id}] written: {self.current_game}")
         root.append(game)
         tree.write(self.file_path)
 
@@ -191,6 +188,10 @@ if __name__ == "__main__":
     until the user exits the program. Commands are sent to the connected Arduino device, 
     and the responses are logged accordingly.
     """
+
+    # Initialize the serial port
+    ser = serial.Serial(SERIAL_PORT, BAUDRATE)
+    time.sleep(2)
 
     try:
         # Menu options, including selecting game mode
