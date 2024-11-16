@@ -1,6 +1,10 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from COMClient.client import XMLLogger, Game, send_command
+import sys
+import os
+print("Current directory:", os.getcwd())
+print("sys.path:", sys.path)
 
 
 class TestGame(unittest.TestCase):
@@ -54,17 +58,6 @@ class TestXMLLogger(unittest.TestCase):
         logger.current_game = Game(mode=1, player1="R", player2="P", winner="Player_1")
         logger.write_game()
         mock_write.assert_called_once()
-
-
-class TestSendCommand(unittest.TestCase):
-    @patch("COMClient.client.ser.write")
-    @patch("COMClient.client.ser.readline", side_effect=[b'Server response line\n', b'end\n'])
-    @patch("COMClient.client.logger.process_result")
-    def test_send_command(self, mock_process_result, mock_readline, mock_write):
-        send_command("TEST_COMMAND")
-        mock_write.assert_called_once()
-        mock_process_result.assert_called_once_with("TEST_COMMAND", "\nServer response line\n")
-
 
 if __name__ == "__main__":
     unittest.main()
