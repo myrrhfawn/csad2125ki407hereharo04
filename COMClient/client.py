@@ -155,6 +155,8 @@ class XMLLogger:
             # print(f"Game [{self.id}] written: {self.current_game}")
             root.append(game)
             tree.write(self.file_path)
+        else:
+            print("Log file not found")
 
 logger = XMLLogger(file_name="game_log.xml")
 
