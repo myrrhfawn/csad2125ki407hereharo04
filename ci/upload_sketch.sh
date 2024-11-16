@@ -8,11 +8,13 @@ if [ -n "$GITHUB_WORKSPACE" ]; then
 else
   PROJECT_DIR="$LOCAL_DIR/csad2125ki407hereharo04"  # Binary file name
 fi
+chmod -R 777 $PROJECT_DIR/ci/build/*
+ls -ld /home/logi/Документи/APKS/csad2125ki407hereharo04/ci/build
+ls -l /home/logi/Документи/APKS/csad2125ki407hereharo04/ci/build
+groups
 
 SKETCH_NAME="$PROJECT_DIR/COMServer/COMServer.ino"  # Binary file name
 
 # Uploadin to board
 echo "Uploading sketch $SKETCH_NAME to $BOARD due $SERIAL_PORT..."
-arduino-cli upload -p $SERIAL_PORT --fqbn $BOARD --input-dir $PROJECT_DIR/ci/build $SKETCH_NAME
-
-echo "Success."
+$PROJECT_DIR/ci/bin/arduino-cli upload -p $SERIAL_PORT --fqbn $BOARD --input-dir $PROJECT_DIR/ci/build $SKETCH_NAME
