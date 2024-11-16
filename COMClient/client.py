@@ -49,7 +49,7 @@ class XMLLogger:
 
         @param file_name The name of the XML log file.
         """
-        if os.path.exists(LOCAL_DIR):
+        if LOCAL_DIR is not None and os.path.exists(LOCAL_DIR):
             self.file_path = os.path.join(LOCAL_DIR, "csad2125ki407hereharo04", file_name)
         else:
             self.file_path = os.path.join(os.getcwd(), file_name)
