@@ -49,3 +49,17 @@ jobs:
           path: |
             ./ci/build/**
 
+      # Step 6: Generate docs
+      - name: Generate docs
+        run: |
+          mkdir -p docs/
+          chmod +xw ./docs/*
+          ./ci/generate_docs.sh
+
+      - name: Upload documentations reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries-and-reports
+          path: |
+            ./docs/**
+
