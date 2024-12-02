@@ -12,3 +12,7 @@ curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.
 arduino-cli config init
 arduino-cli core install arduino:avr
 
+sudo apt update
+sudo apt install doxygen
+
+
