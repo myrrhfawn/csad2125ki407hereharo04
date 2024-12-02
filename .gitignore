@@ -1,5 +1,4 @@
 bin/
 build/
 game_log.xml
-/html/
-/latex/
+/docs/
