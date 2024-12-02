@@ -1,3 +1,3 @@
-mkdir docs/
-cd docs/
+mkdir ./docs/
+cd ./docs/
 doxygen ../Doxyfile

@@ -52,8 +52,6 @@ jobs:
       # Step 6: Generate docs
       - name: Generate docs
         run: |
-          mkdir -p ./docs/
-          chmod +xw ./docs/*
           ./ci/generate_docs.sh
 
       - name: Upload documentations reports
